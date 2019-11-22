@@ -22,11 +22,28 @@ public class HumanPlayer implements Player {
     @Override
     public Move move(final Position position, final Cell cell) {
         while (true) {
+            int[] pos = new int[2];
             out.println("Position");
             out.println(position);
             out.println(cell + "'s move");
             out.println("Enter row and column");
-            final Move move = new Move(in.nextInt(), in.nextInt(), cell);
+
+            int idx = 0;
+            while (idx < 2) {
+                if (in.hasNext()) {
+                    if (in.hasNextInt()) {
+                        pos[idx++] = in.nextInt();
+                    } else {
+                        in.next();
+                    }
+                }/* else {
+                    out.println("Player gave up!");
+                    in.next();
+                    return new Move(-1, -1, Cell.E);
+                }*/
+            }
+
+            final Move move = new Move(pos[0], pos[1], cell);
             if (position.isValid(move)) {
                 return move;
             }
