@@ -1,4 +1,4 @@
-package ticTacToe;
+package mnkGame;
 
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
@@ -8,7 +8,8 @@ public class Main {
         final Game game = new Game(false, new HumanPlayer(), new HumanPlayer());
         int result;
         do {
-            result = game.play(new TicTacToeBoard());
+            System.out.println("\n\n\n");
+            result = game.play(new mnkBoard(8, 5, 4));
             System.out.println("Game result: " + result);
         } while (result != 0);
     }

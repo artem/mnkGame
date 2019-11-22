@@ -1,4 +1,4 @@
-package ticTacToe;
+package mnkGame;
 
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)

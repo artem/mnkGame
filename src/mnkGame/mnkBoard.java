@@ -1,4 +1,4 @@
-package ticTacToe;
+package mnkGame;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
  */
-public class TicTacToeBoard implements Board, Position {
+public class mnkBoard implements Board, Position {
     private static final Map<Cell, Character> SYMBOLS = Map.of(
             Cell.X, 'X',
             Cell.O, 'O',
@@ -18,7 +18,7 @@ public class TicTacToeBoard implements Board, Position {
     private final int k;
     private long used = 0;
 
-    public TicTacToeBoard(int m, int n, int k) {
+    public mnkBoard(int m, int n, int k) {
         if (m < 1 || n < 1) {
             throw new IllegalArgumentException("Dimensions must be positive");
         }
@@ -140,7 +140,7 @@ public class TicTacToeBoard implements Board, Position {
 
     @Override
     public boolean isValid(final Move move) {
-        return checkCell(move.getRow(), move.getColumn(), Cell.E) && move.getValue() == getCell();
+        return checkCell(move.getRow(), move.getColumn(), Cell.E) && turn == getCell();
     }
 
     @Override

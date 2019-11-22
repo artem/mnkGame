@@ -1,4 +1,4 @@
-package ticTacToe;
+package mnkGame;
 
 import java.io.PrintStream;
 import java.util.Scanner;
