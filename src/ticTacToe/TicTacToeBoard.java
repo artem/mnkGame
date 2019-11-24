@@ -15,9 +15,16 @@ public class TicTacToeBoard implements Board, Position {
 
     private final Cell[][] cells;
     private Cell turn;
+    private final int k;
+    private long used = 0;
 
-    public TicTacToeBoard() {
-        this.cells = new Cell[3][3];
+    public TicTacToeBoard(int m, int n, int k) {
+        if (m < 1 || n < 1) {
+            throw new IllegalArgumentException("Dimensions must be positive");
+        }
+
+        this.cells = new Cell[m][n];
+        this.k = k;
         for (Cell[] row : cells) {
             Arrays.fill(row, Cell.E);
         }
@@ -41,38 +48,85 @@ public class TicTacToeBoard implements Board, Position {
         }
 
         cells[move.getRow()][move.getColumn()] = move.getValue();
+        used++;
 
-        int inDiag1 = 0;
-        int inDiag2 = 0;
-        int empty = 0;
-        for (int u = 0; u < 3; u++) {
-            int inRow = 0;
-            int inColumn = 0;
-            for (int v = 0; v < 3; v++) {
-                if (cells[u][v] == turn) {
-                    inRow++;
-                }
-                if (cells[v][u] == turn) {
-                    inColumn++;
-                }
-                if (cells[u][v] == Cell.E) {
-                    empty++;
-                }
+        return checkResult(move);
+    }
+
+    private Result checkResult(final Move move) {
+        int m = getM();
+        int n = getN();
+        int r = move.getRow();
+        int c = move.getColumn();
+        Cell curTurn = move.getValue();
+
+        int inV = 1;
+        int inH = 1;
+        int inDiag1 = 1;
+        int inDiag2 = 1;
+        boolean skipL = false;
+        boolean skipTL = false;
+        boolean skipT = false;
+        boolean skipTR = false;
+        boolean skipR = false;
+        boolean skipBR = false;
+        boolean skipB = false;
+        boolean skipBL = false;
+
+        for (int i = 1; i < k; i++) {
+            // Same row -
+            if (!skipL && checkCell(r, c - i, curTurn)) {
+                inH++;
+            } else {
+                skipL = true;
             }
-            if (inRow == 3 || inColumn == 3) {
-                return Result.WIN;
+            if (!skipR && checkCell(r, c + i, curTurn)) {
+                inH++;
+            } else {
+                skipR = true;
             }
-            if (cells[u][u] == turn) {
+
+            // Same diagonal (\)
+            if (!skipTL && checkCell(r - i, c - i, curTurn)) {
                 inDiag1++;
+            } else {
+                skipTL = true;
             }
-            if (cells[u][2 - u] == turn) {
+            if (!skipBR && checkCell(r + i, c + i, curTurn)) {
+                inDiag1++;
+            } else {
+                skipBR = true;
+            }
+
+            // Same column (|)
+            if (!skipT &&checkCell(r, c - i, curTurn)) {
+                inV++;
+            } else {
+                skipT = true;
+            }
+            if (!skipB && checkCell(r, c + i, curTurn)) {
+                inV++;
+            } else {
+                skipB = true;
+            }
+
+            // Same back diagonal (/)
+            if (!skipTR && checkCell(r - i, c + i, curTurn)) {
                 inDiag2++;
+            } else {
+                skipTR = true;
+            }
+            if (!skipBL && checkCell(r + i, c - i, curTurn)) {
+                inDiag2++;
+            } else {
+                skipBL = true;
             }
         }
-        if (inDiag1 == 3 || inDiag2 == 3) {
+
+        if (inV >= k || inH >= k || inDiag1 >= k || inDiag2 >= k) {
             return Result.WIN;
         }
-        if (empty == 0) {
+        if (used == m * n) {
             return Result.DRAW;
         }
 
@@ -80,12 +134,23 @@ public class TicTacToeBoard implements Board, Position {
         return Result.UNKNOWN;
     }
 
+    private boolean checkCell(final int r, final int c, final Cell cell) {
+        return 0 <= r && r < getM() && 0 <= c && c < getN() && cells[r][c] == cell;
+    }
+
     @Override
     public boolean isValid(final Move move) {
-        return 0 <= move.getRow() && move.getRow() < 3
-                && 0 <= move.getColumn() && move.getColumn() < 3
-                && cells[move.getRow()][move.getColumn()] == Cell.E
-                && turn == getCell();
+        return checkCell(move.getRow(), move.getColumn(), Cell.E) && move.getValue() == getCell();
+    }
+
+    @Override
+    public int getM() {
+        return cells.length;
+    }
+
+    @Override
+    public int getN() {
+        return cells[0].length;
     }
 
     @Override
@@ -95,11 +160,17 @@ public class TicTacToeBoard implements Board, Position {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder(" 012");
-        for (int r = 0; r < 3; r++) {
+        final StringBuilder sb = new StringBuilder("  ");
+        for (int i = 0; i < getN(); i++) {
+            sb.append(" ");
+            sb.append(i);
+        }
+        for (int r = 0; r < getM(); r++) {
             sb.append("\n");
             sb.append(r);
-            for (int c = 0; c < 3; c++) {
+            sb.append(" ");
+            for (int c = 0; c < getN(); c++) {
+                sb.append(" ");
                 sb.append(SYMBOLS.get(cells[r][c]));
             }
         }
