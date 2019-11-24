@@ -140,7 +140,7 @@ public class mnkBoard implements Board, Position {
 
     @Override
     public boolean isValid(final Move move) {
-        return checkCell(move.getRow(), move.getColumn(), Cell.E) && turn == getCell();
+        return checkCell(move.getRow(), move.getColumn(), Cell.E) && move.getValue() == getCell();
     }
 
     @Override
