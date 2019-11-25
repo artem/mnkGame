@@ -2,29 +2,33 @@ package mnkGame;
 
 public class Score {
     private final int[][] score;
+    private final boolean log;
 
-    public Score(int c) {
+    public Score(final int c, final boolean log) {
         score = new int[c][c];
+        this.log = log;
     }
 
-    public int record(int i, int j, int result) {
-        int winner = 0;
+    public void record(final int i, final int j, final int result) {
+        log("Players " + (i+1) + " and " + (j+1) + ", result: " + result);
         switch (result) {
             case 0:
                 score[i][j] = 1;
                 score[j][i] = 1;
-                winner = 0;
                 break;
             case 1:
                 score[i][j] = 3;
-                winner = i + 1;
                 break;
             case 2:
                 score[j][i] = 3;
-                winner = j + 1;
                 break;
         }
-        return winner;
+    }
+
+    private void log(final String message) {
+        if (log) {
+            System.out.println(message);
+        }
     }
 
     @Override

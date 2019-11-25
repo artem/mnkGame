@@ -7,7 +7,7 @@ public class Game {
     private final boolean log;
     private final Player player1, player2;
 
-    public Game(final boolean log, final Player player1, final Player player2) {
+    public Game(final Player player1, final Player player2, final boolean log) {
         this.log = log;
         this.player1 = player1;
         this.player2 = player2;
@@ -19,10 +19,15 @@ public class Game {
             if (result1 != -1) {
                 return result1;
             }
+            log();
+            log("Game result: " + result1);
+
             final int result2 = move(board, player2, 2);
             if (result2 != -1) {
                 return result2;
             }
+            log();
+            log("Game result: " + result2);
         }
     }
 
@@ -48,6 +53,12 @@ public class Game {
     private void log(final String message) {
         if (log) {
             System.out.println(message);
+        }
+    }
+
+    private void log() {
+        if (log) {
+            System.out.println();
         }
     }
 }
