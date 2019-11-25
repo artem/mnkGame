@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
  */
-public class mnkBoard implements Board, Position {
+public class MnkBoard implements Board, Position {
     private static final Map<Cell, Character> SYMBOLS = Map.of(
             Cell.X, 'X',
             Cell.O, 'O',
@@ -19,7 +19,7 @@ public class mnkBoard implements Board, Position {
     private final int k;
     private long empty;
 
-    public mnkBoard(int m, int n, int k) {
+    public MnkBoard(int m, int n, int k) {
         if (m < 1 || n < 1) {
             throw new IllegalArgumentException("Dimensions must be positive");
         }

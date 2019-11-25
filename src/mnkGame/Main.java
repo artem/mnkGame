@@ -9,7 +9,7 @@ public class Main {
         int result;
         do {
             System.out.println("\n\n\n");
-            result = game.play(new mnkBoard(8, 5, 4));
+            result = game.play(new MnkBoard(8, 5, 4));
             System.out.println("Game result: " + result);
         } while (result != 0);
     }
