@@ -62,71 +62,26 @@ public class MnkBoard implements Board, Position {
         int c = move.getColumn();
         Cell curTurn = move.getValue();
 
-        int inV = 1;
-        int inH = 1;
-        int inDiag1 = 1;
-        int inDiag2 = 1;
-        boolean skipL = false;
-        boolean skipTL = false;
-        boolean skipT = false;
-        boolean skipTR = false;
-        boolean skipR = false;
-        boolean skipBR = false;
-        boolean skipB = false;
-        boolean skipBL = false;
+        final int[] directions = {1, 1, 1, 1};
+        final int[][] vectors = {
+                {1, 0}, {1, 1}, {0, 1}, {-1, 1}
+        };
 
-        for (int i = 1; i < k; i++) {
-            // Same row -
-            if (!skipL && checkCell(r, c - i, curTurn)) {
-                inH++;
-            } else {
-                skipL = true;
+        for (int i = 0; i < vectors.length; i++) {
+            int vx = vectors[i][0];
+            int vy = vectors[i][1];
+            for (int x = r + vx, y = c + vy; checkCell(x, y, curTurn); x += vx, y += vy) {
+                directions[i]++;
             }
-            if (!skipR && checkCell(r, c + i, curTurn)) {
-                inH++;
-            } else {
-                skipR = true;
-            }
-
-            // Same diagonal (\)
-            if (!skipTL && checkCell(r - i, c - i, curTurn)) {
-                inDiag1++;
-            } else {
-                skipTL = true;
-            }
-            if (!skipBR && checkCell(r + i, c + i, curTurn)) {
-                inDiag1++;
-            } else {
-                skipBR = true;
-            }
-
-            // Same column (|)
-            if (!skipT &&checkCell(r, c - i, curTurn)) {
-                inV++;
-            } else {
-                skipT = true;
-            }
-            if (!skipB && checkCell(r, c + i, curTurn)) {
-                inV++;
-            } else {
-                skipB = true;
-            }
-
-            // Same back diagonal (/)
-            if (!skipTR && checkCell(r - i, c + i, curTurn)) {
-                inDiag2++;
-            } else {
-                skipTR = true;
-            }
-            if (!skipBL && checkCell(r + i, c - i, curTurn)) {
-                inDiag2++;
-            } else {
-                skipBL = true;
+            for (int x = r - vx, y = c - vy; checkCell(x, y, curTurn); x -= vx, y -= vy) {
+                directions[i]++;
             }
         }
 
-        if (inV >= k || inH >= k || inDiag1 >= k || inDiag2 >= k) {
-            return Result.WIN;
+        for (int cells : directions) {
+            if (cells >= k) {
+                return Result.WIN;
+            }
         }
         if (empty == 0) {
             return Result.DRAW;
