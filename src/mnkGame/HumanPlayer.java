@@ -36,11 +36,10 @@ public class HumanPlayer implements Player {
                     } else {
                         in.next();
                     }
-                }/* else {
-                    out.println("Player gave up!");
-                    in.next();
-                    return new Move(-1, -1, Cell.E);
-                }*/
+                } else {
+                    out.println("Stalemate");
+                    throw new IllegalStateException("Input stream has been closed");
+                }
             }
 
             final Move move = new Move(pos[0], pos[1], cell);
