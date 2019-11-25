@@ -16,7 +16,7 @@ public class mnkBoard implements Board, Position {
     private final Cell[][] cells;
     private Cell turn;
     private final int k;
-    private long used = 0;
+    private long empty;
 
     public mnkBoard(int m, int n, int k) {
         if (m < 1 || n < 1) {
@@ -28,6 +28,8 @@ public class mnkBoard implements Board, Position {
         for (Cell[] row : cells) {
             Arrays.fill(row, Cell.E);
         }
+        empty = m * n;
+
         turn = Cell.X;
     }
 
@@ -48,7 +50,7 @@ public class mnkBoard implements Board, Position {
         }
 
         cells[move.getRow()][move.getColumn()] = move.getValue();
-        used++;
+        empty--;
 
         return checkResult(move);
     }
@@ -126,7 +128,7 @@ public class mnkBoard implements Board, Position {
         if (inV >= k || inH >= k || inDiag1 >= k || inDiag2 >= k) {
             return Result.WIN;
         }
-        if (used == m * n) {
+        if (empty == 0) {
             return Result.DRAW;
         }
 
