@@ -26,4 +26,9 @@ public class PositionProxy implements Position {
     public Cell getCell(int r, int c) {
         return board.getCell(r, c);
     }
+
+    @Override
+    public String toString() {
+        return board.toString();
+    }
 }
