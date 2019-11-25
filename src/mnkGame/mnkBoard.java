@@ -14,6 +14,7 @@ public class mnkBoard implements Board, Position {
     );
 
     private final Cell[][] cells;
+    private final Position proxy;
     private Cell turn;
     private final int k;
     private long empty;
@@ -31,11 +32,12 @@ public class mnkBoard implements Board, Position {
         empty = m * n;
 
         turn = Cell.X;
+        proxy = new PositionProxy(this);
     }
 
     @Override
     public Position getPosition() {
-        return this;
+        return proxy;
     }
 
     @Override
@@ -56,8 +58,6 @@ public class mnkBoard implements Board, Position {
     }
 
     private Result checkResult(final Move move) {
-        int m = getM();
-        int n = getN();
         int r = move.getRow();
         int c = move.getColumn();
         Cell curTurn = move.getValue();
