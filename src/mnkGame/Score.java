@@ -1,7 +1,7 @@
 package mnkGame;
 
 public class Score {
-    final int[][] score;
+    private final int[][] score;
 
     public Score(int c) {
         score = new int[c][c];
@@ -39,7 +39,11 @@ public class Score {
             resultTable.append(i + 1);
             for (int j = 0; j < score.length; j++) {
                 resultTable.append(" ");
-                resultTable.append(score[i][j]);
+                if (i != j) {
+                    resultTable.append(score[i][j]);
+                } else {
+                    resultTable.append("-");
+                }
             }
         }
 
