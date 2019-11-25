@@ -30,16 +30,7 @@ public class HumanPlayer implements Player {
 
             int idx = 0;
             while (idx < 2) {
-                if (in.hasNext()) {
-                    if (in.hasNextInt()) {
-                        pos[idx++] = in.nextInt();
-                    } else {
-                        in.next();
-                    }
-                } else {
-                    out.println("Stalemate");
-                    throw new IllegalStateException("Input stream has been closed");
-                }
+                pos[idx++] = nextInt();
             }
 
             final Move move = new Move(pos[0], pos[1], cell);
@@ -49,6 +40,19 @@ public class HumanPlayer implements Player {
             final int row = move.getRow();
             final int column = move.getColumn();
             out.println("Move " + move + " is invalid");
+        }
+    }
+
+    private int nextInt() {
+        while (true) {
+            if (!in.hasNext()) {
+                out.println("Stalemate");
+                throw new IllegalStateException("Input stream has been closed");
+            }
+            if (in.hasNextInt()) {
+                return in.nextInt();
+            }
+            in.next();
         }
     }
 }
