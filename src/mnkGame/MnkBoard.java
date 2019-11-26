@@ -62,27 +62,25 @@ public class MnkBoard implements Board, Position {
         int c = move.getColumn();
         Cell curTurn = move.getValue();
 
-        final int[] directions = {1, 1, 1, 1};
         final int[][] vectors = {
                 {1, 0}, {1, 1}, {0, 1}, {-1, 1}
         };
 
         for (int i = 0; i < vectors.length; i++) {
+            int cells = 1;
             int vx = vectors[i][0];
             int vy = vectors[i][1];
             for (int x = r + vx, y = c + vy; checkCell(x, y, curTurn); x += vx, y += vy) {
-                directions[i]++;
+                cells++;
             }
             for (int x = r - vx, y = c - vy; checkCell(x, y, curTurn); x -= vx, y -= vy) {
-                directions[i]++;
+                cells++;
             }
-        }
-
-        for (int cells : directions) {
             if (cells >= k) {
                 return Result.WIN;
             }
         }
+        
         if (empty == 0) {
             return Result.DRAW;
         }
