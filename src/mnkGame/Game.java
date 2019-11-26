@@ -19,8 +19,6 @@ public class Game {
         for (int i = 0; ; i = (i + 1) % players.length) {
             final int result = move(board, players[i], i + 1);
             if (result != -1) {
-                log();
-                log("Game result: " + result);
                 return result;
             }
         }
@@ -35,11 +33,15 @@ public class Game {
             log("Player " + no + " won");
             return no;
         } else if (result == Result.LOSE) {
-            log("Player " + no + " lose"); // TODO FIXME
-            return Cell.values().length - no;
+            log("LOSE is DEPRECATED, you can't lose anymore");
+            log("Aborting...");
+            return 0;
         } else if (result == Result.DRAW) {
             log("Draw");
             return 0;
+        } else if (result == Result.SKIP) {
+            log("Player " + no + " skipped their turn");
+            return -1;
         } else {
             return -1;
         }

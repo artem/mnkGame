@@ -53,10 +53,15 @@ public class MnkBoard implements Board, Position {
         return Cell.values()[turn];
     }
 
+    private void nextPlayer() {
+        turn = (turn + 1) % players;
+    }
+
     @Override
     public Result makeMove(final Move move) {
         if (!isValid(move)) {
-            return Result.LOSE;
+            nextPlayer();
+            return Result.SKIP;
         }
 
         cells[move.getRow()][move.getColumn()] = move.getValue();
@@ -95,7 +100,7 @@ public class MnkBoard implements Board, Position {
             return Result.DRAW;
         }
 
-        turn = (turn + 1) % players;
+        nextPlayer();
         return Result.UNKNOWN;
     }
 
