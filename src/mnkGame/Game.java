@@ -7,6 +7,10 @@ public class Game {
     private final boolean log;
     private final Player[] players;
 
+    public Game(final Player player1, final Player player2, final boolean log) {
+        this(new Player[]{player1, player2}, log);
+    }
+
     public Game(final Player[] players, final boolean log) {
         if (players.length > Cell.values().length - 1) {
             throw new IllegalArgumentException("Too much players were given");
