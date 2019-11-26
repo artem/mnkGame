@@ -10,16 +10,23 @@ public class MnkBoard implements Board, Position {
     private static final Map<Cell, Character> SYMBOLS = Map.of(
             Cell.X, 'X',
             Cell.O, 'O',
+            Cell.HYPHEN, '-',
+            Cell.BAR, '|',
             Cell.E, '.'
-    );
+            );
 
     private final Cell[][] cells;
     private final Position proxy;
-    private Cell turn;
+    private int turn;
+    private final int players;
     private final int k;
     private long empty;
 
     public MnkBoard(int m, int n, int k) {
+        this(m, n, k, 2);
+    }
+
+    public MnkBoard(int m, int n, int k, int players) {
         if (m < 1 || n < 1) {
             throw new IllegalArgumentException("Dimensions must be positive");
         }
@@ -31,8 +38,9 @@ public class MnkBoard implements Board, Position {
         }
         empty = m * n;
 
-        turn = Cell.X;
+        turn = 0;
         proxy = new PositionProxy(this);
+        this.players = players;
     }
 
     @Override
@@ -42,7 +50,7 @@ public class MnkBoard implements Board, Position {
 
     @Override
     public Cell getCell() {
-        return turn;
+        return Cell.values()[turn];
     }
 
     @Override
@@ -87,7 +95,7 @@ public class MnkBoard implements Board, Position {
             return Result.DRAW;
         }
 
-        turn = turn == Cell.X ? Cell.O : Cell.X;
+        turn = (turn + 1) % players;
         return Result.UNKNOWN;
     }
 

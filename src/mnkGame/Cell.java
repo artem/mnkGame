@@ -4,5 +4,5 @@ package mnkGame;
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
  */
 public enum Cell {
-    X, O, E
+    X, O, HYPHEN, BAR, E
 }

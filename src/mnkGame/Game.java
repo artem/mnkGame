@@ -5,29 +5,24 @@ package mnkGame;
  */
 public class Game {
     private final boolean log;
-    private final Player player1, player2;
+    private final Player[] players;
 
-    public Game(final Player player1, final Player player2, final boolean log) {
+    public Game(final Player[] players, final boolean log) {
+        if (players.length > Cell.values().length - 1) {
+            throw new IllegalArgumentException("Too much players were given");
+        }
+        this.players = players;
         this.log = log;
-        this.player1 = player1;
-        this.player2 = player2;
     }
 
     public int play(Board board) {
-        while (true) {
-            final int result1 = move(board, player1, 1);
-            if (result1 != -1) {
-                return result1;
+        for (int i = 0; ; i = (i + 1) % players.length) {
+            final int result = move(board, players[i], i + 1);
+            if (result != -1) {
+                log();
+                log("Game result: " + result);
+                return result;
             }
-            log();
-            log("Game result: " + result1);
-
-            final int result2 = move(board, player2, 2);
-            if (result2 != -1) {
-                return result2;
-            }
-            log();
-            log("Game result: " + result2);
         }
     }
 
@@ -40,8 +35,8 @@ public class Game {
             log("Player " + no + " won");
             return no;
         } else if (result == Result.LOSE) {
-            log("Player " + no + " lose");
-            return 3 - no;
+            log("Player " + no + " lose"); // TODO FIXME
+            return Cell.values().length - no;
         } else if (result == Result.DRAW) {
             log("Draw");
             return 0;
