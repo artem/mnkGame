@@ -13,14 +13,14 @@ public class Score {
         log("Players " + (i+1) + " and " + (j+1) + ", result: " + result);
         switch (result) {
             case 0:
-                score[i][j] = 1;
-                score[j][i] = 1;
+                score[i][j] += 1;
+                score[j][i] += 1;
                 break;
             case 1:
-                score[i][j] = 3;
+                score[i][j] += 3;
                 break;
             case 2:
-                score[j][i] = 3;
+                score[j][i] += 3;
                 break;
         }
     }
